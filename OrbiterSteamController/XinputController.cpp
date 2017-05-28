@@ -51,29 +51,29 @@ int XinputController::getLT() {
 }
 
 double XinputController::getNormLX() {
-	return max(-1, (double)getNormLX() / 32767); // Returns from -1 to 1
+	return max(-1, (double)getLX() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormLY() {
-	return max(-1, (double)getNormLY() / 32767); // Returns from -1 to 1
+	return max(-1, (double)getLY() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormRX() {
-	return max(-1, (double)getNormRX() / 32767); // Returns from -1 to 1
+	return max(-1, (double)getRX() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormRY() {
-	return max(-1, (double)getNormRY() / 32767); // Returns from -1 to 1
+	return max(-1, (double)getRY() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormRT() {
-	//return max(-1, (double)((getNormRT() - 128) / 127)); // Returns from -1 to 1
-	return (double)getNormRT() / 255; // Returns from 0 to 1
+	//return max(-1, (double)((getRT() - 128) / 127)); // Returns from -1 to 1
+	return (double)getRT() / 255; // Returns from 0 to 1
 }
 
 double XinputController::getNormLT() {
-	//return max(-1, (double)((getNormLT() - 128) / 127)); // Returns from -1 to 1
-	return (double)getNormLT() / 255; // Returns from 0 to 1
+	//return max(-1, (double)((getLT() - 128) / 127)); // Returns from -1 to 1
+	return (double)getLT() / 255; // Returns from 0 to 1
 }
 
 void XinputController::setControllerNumber() // Sets the controller to the first connected controller
