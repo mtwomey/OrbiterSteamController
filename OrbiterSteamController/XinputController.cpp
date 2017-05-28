@@ -30,6 +30,16 @@ int XinputController::getLY() {
 	return state.Gamepad.sThumbLY;
 }
 
+int XinputController::getRX() {
+	updateState();
+	return state.Gamepad.sThumbRX;
+}
+
+int XinputController::getRY() {
+	updateState();
+	return state.Gamepad.sThumbRY;
+}
+
 int XinputController::getRT() {
 	updateState();
 	return state.Gamepad.bRightTrigger;
@@ -41,25 +51,29 @@ int XinputController::getLT() {
 }
 
 double XinputController::getNormLX() {
-	updateState();
-	return max(-1, (double)state.Gamepad.sThumbLX / 32767);
+	return max(-1, (double)getNormLX() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormLY() {
-	updateState();
-	return max(-1, (double)state.Gamepad.sThumbLY / 32767);
+	return max(-1, (double)getNormLY() / 32767); // Returns from -1 to 1
+}
+
+double XinputController::getNormRX() {
+	return max(-1, (double)getNormRX() / 32767); // Returns from -1 to 1
+}
+
+double XinputController::getNormRY() {
+	return max(-1, (double)getNormRY() / 32767); // Returns from -1 to 1
 }
 
 double XinputController::getNormRT() {
-	updateState();
-	//return max(-1, (double)((state.Gamepad.bRightTrigger - 128) / 127));
-	return (double)state.Gamepad.bRightTrigger / 255;
+	//return max(-1, (double)((getNormRT() - 128) / 127)); // Returns from -1 to 1
+	return (double)getNormRT() / 255; // Returns from 0 to 1
 }
 
 double XinputController::getNormLT() {
-	updateState();
-	//return max(-1, (double)((state.Gamepad.bLeftTrigger - 128) / 127));
-	return (double)state.Gamepad.bLeftTrigger / 255;
+	//return max(-1, (double)((getNormLT() - 128) / 127)); // Returns from -1 to 1
+	return (double)getNormLT() / 255; // Returns from 0 to 1
 }
 
 void XinputController::setControllerNumber() // Sets the controller to the first connected controller
