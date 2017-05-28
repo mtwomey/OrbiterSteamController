@@ -1,8 +1,11 @@
 #include "XinputController.h"
 
-XinputController::XinputController(int controllerNumber)
+
+
+XinputController::XinputController()
 {
 }
+
 
 XinputController::~XinputController()
 {
