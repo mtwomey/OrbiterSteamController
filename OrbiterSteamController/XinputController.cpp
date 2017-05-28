@@ -20,11 +20,46 @@ void XinputController::updateState() {
 	XInputGetState(controllerNumber, &state);
 }
 
-int XinputController::getLX()
-{
+int XinputController::getLX() {
 	updateState();
-	XInputGetState(controllerNumber, &state);
 	return state.Gamepad.sThumbLX;
+}
+
+int XinputController::getLY() {
+	updateState();
+	return state.Gamepad.sThumbLY;
+}
+
+int XinputController::getRT() {
+	updateState();
+	return state.Gamepad.bRightTrigger;
+}
+
+int XinputController::getLT() {
+	updateState();
+	return state.Gamepad.bLeftTrigger;
+}
+
+double XinputController::getNormLX() {
+	updateState();
+	return max(-1, (double)state.Gamepad.sThumbLX / 32767);
+}
+
+double XinputController::getNormLY() {
+	updateState();
+	return max(-1, (double)state.Gamepad.sThumbLY / 32767);
+}
+
+double XinputController::getNormRT() {
+	updateState();
+	//return max(-1, (double)((state.Gamepad.bRightTrigger - 128) / 127));
+	return (double)state.Gamepad.bRightTrigger / 255;
+}
+
+double XinputController::getNormLT() {
+	updateState();
+	//return max(-1, (double)((state.Gamepad.bLeftTrigger - 128) / 127));
+	return (double)state.Gamepad.bLeftTrigger / 255;
 }
 
 void XinputController::setControllerNumber() // Sets the controller to the first connected controller

@@ -13,6 +13,13 @@ public:
 	void init();
 	void updateState();
 	int getLX();
+	int getLY();
+	int getRT();
+	int getLT();
+	double getNormLX();
+	double getNormLY();
+	double getNormRT();
+	double getNormLT();
 private:
 	void setControllerNumber();
 };
