@@ -1,82 +1,27 @@
 #define STRICT
 #define ORBITER_MODULE
 
+//#define DEBUG
+
 #include <Orbitersdk.h>
-#include <xinput.h>
+#include "XinputController.h"
 
-int getFirstConnectedController();
-int getLX(int controller);
-
-int firstConnectedController = -1;
-XINPUT_STATE state;
+XinputController controller;
 
 DLLCLBK void InitModule(HINSTANCE hModule) {
-	firstConnectedController = getFirstConnectedController();
+	controller = XinputController();
 }
 
-DLLCLBK void opcPreStep(double simt, double simdt, double mjd)
-{
-	/*sprintf(oapiDebugString(), "%.2f", oapiGetSimTime());*/
-	//firstConnectedController = getFirstConnectedController();
-	sprintf(oapiDebugString(), "First Controller: %d", getLX(firstConnectedController));
+DLLCLBK void opcPreStep(double simt, double simdt, double mjd) {
+    #ifdef DEBUG
+	sprintf(oapiDebugString(), "LX: %f LY: %f LT+RT: %f RX: %f RY: %f", controller.getNormLX(), controller.getNormLY(), controller.getNormRT() + (controller.getNormLT() * -1), controller.getNormRX(), controller.getNormRY());
+    #endif
 
 	VESSEL* vessel = oapiGetFocusInterface();
-	//vessel->SetADCtrlMode(DWORD(0));
+	vessel->SetControlSurfaceLevel(AIRCTRL_ELEVATOR, controller.getNormLY() * -1, false);
+	vessel->SetControlSurfaceLevel(AIRCTRL_AILERON, controller.getNormLX(), false);
+	vessel->SetControlSurfaceLevel(AIRCTRL_RUDDER, controller.getNormRT() + (controller.getNormLT() * -1), false);
 
-	vessel->SetControlSurfaceLevel(AIRCTRL_ELEVATOR, -1, false);
+	// An experiment with controlling the view with the RS directly. Not really needed as you can bind either pad to a mouse with the right button held down
+	//oapiCameraSetCockpitDir((roundf(controller.getNormRX() * 1000) / 1000) * -1, roundf(controller.getNormRY() * 1000) / 1000, false);
 }
-
-int getFirstConnectedController() {
-	int controllerId = -1;
-
-	for (DWORD i = 0; i < XUSER_MAX_COUNT && controllerId == -1; i++)
-	{
-		
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
-
-		if (XInputGetState(i, &state) == ERROR_SUCCESS)
-			controllerId = i;
-	}
-	return controllerId;
-}
-
-/*XINPUT_STATE updateControllerInputState() {
-	ZeroMemory(&state, sizeof(XINPUT_STATE));
-	XInputGetState(firstConnectedController, &state);
-}*/
-
-int getLX(int controller) {
-	if (controller > -1) {
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
-		XInputGetState(controller, &state);
-		return state.Gamepad.sThumbLX;
-	}
-	else {
-		return -1;
-	}
-}
-int getLY(int controller) {
-	if (controller > -1) {
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
-		XInputGetState(controller, &state);
-		return state.Gamepad.sThumbLY;
-	}
-	else {
-		return -1;
-	}
-}
-
-
-/*
-int getLX() {
-	int controller = getFirstConnectedController();
-	if (controller > -1) {
-		XINPUT_STATE state;
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
-		XInputGetState(controller, &state);
-		return state.Gamepad.sThumbLX;
-	} else {
-		return -1;
-	}
-}
-*/
